@@ -1,0 +1,3 @@
+// the configured options and settings for xlog
+#define xlog_VERSION_MAJOR @xlog_VERSION_MAJOR@
+#define xlog_VERSION_MINOR @xlog_VERSION_MINOR@
