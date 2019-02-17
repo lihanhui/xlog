@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.0)
-set (CXX_STANDARD "c++14")
+set (CXX_STANDARD "c++17")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=${CXX_STANDARD}")
 
 project (xlog)
@@ -12,12 +12,18 @@ configure_file (
   "${PROJECT_BINARY_DIR}/config.h"
 )
 
+include_directories("/usr/local/include/")
+
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/include/")
 
 add_subdirectory(src/wrapper)
-set(EXTRA_LIBS ${EXTRA_LIBS} wrapper)
 
+
+find_library(FMT_LIBRARY fmt HINTS /usr/local/lib)
+set(EXTRA_LIBS ${EXTRA_LIBS} wrapper ${FMT_LIBRARY}) 
+
+#####################################
 add_executable(xlog-test src/xlog.cxx)
 target_link_libraries(xlog-test  ${EXTRA_LIBS})
 
