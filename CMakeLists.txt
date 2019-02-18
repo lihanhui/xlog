@@ -14,10 +14,9 @@ configure_file (
 
 find_package(fmt REQUIRED)
 
-include_directories("/usr/local/include/")
-
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/include/")
+include_directories("/usr/local/include/")
 
 add_subdirectory(src/wrapper)
 

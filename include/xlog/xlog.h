@@ -64,11 +64,21 @@ private:
 //aquaman::xlog::logger l = std::forward<aquaman::xlog::logger>(logger_);           \
 //aquaman::xlog::log_level level = std::forward<aquaman::xlog::log_level> (level_); \
     
+#define LOG_IF(cond, logger_, level_, fmt, args...) do {                                \
+    if(!(cond)){                                                                        \
+        break;                                                                          \
+    }                                                                                   \
+    if(logger_.log_enabled(level_)){                                                    \
+        logger_.log(level_, XLOG_GET_FILE(), XLOG_GET_LINE(), fmt, ##args);             \
+    }                                                                                   \
+}while(0)
+
 #define LOG(logger_, level_, fmt, args...) do {                                         \
     if(logger_.log_enabled(level_)){                                                    \
         logger_.log(level_, XLOG_GET_FILE(), XLOG_GET_LINE(), fmt, ##args);             \
     }                                                                                   \
 }while(0)
+
 
 
 };
