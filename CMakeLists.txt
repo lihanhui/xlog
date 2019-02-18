@@ -12,6 +12,8 @@ configure_file (
   "${PROJECT_BINARY_DIR}/config.h"
 )
 
+find_package(fmt REQUIRED)
+
 include_directories("/usr/local/include/")
 
 include_directories("${PROJECT_BINARY_DIR}")
