@@ -18,22 +18,20 @@ enum class log_level {
     WARN        = 3,
     ERROR       = 4,
     FATAL       = 5
-            
-    
 };
 
 class logger {
 private:
-    std::string className; // or fileName
+    std::string class_name; // or fileName
 public:
     logger(){
-        this->className = "root";
+        this->class_name = "root";
     }
-    logger(std::string className){
-        this->className = className;
+    logger(std::string class_name){
+        this->class_name = class_name;
     }
     std::string get_class_name(){
-        return this->className;
+        return this->class_name;
     }
     bool log_enabled(log_level level);//{
     //  return true;
@@ -46,9 +44,8 @@ public:
         return *this;
     }
 private:
-    bool log_backend_enabled(){
-        return false;
-    }
+    bool log_backend_enabled();
+    
     inline std::string current(){
         std::chrono::time_point<std::chrono::system_clock> p2 = std::chrono::system_clock::now();
         std::time_t today_time = std::chrono::system_clock::to_time_t(p2);
@@ -78,8 +75,6 @@ private:
         logger_.log(level_, XLOG_GET_FILE(), XLOG_GET_LINE(), fmt, ##args);             \
     }                                                                                   \
 }while(0)
-
-
 
 };
 
