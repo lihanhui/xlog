@@ -37,6 +37,9 @@ public:
     //  return true;
     //}
     template<class... Args> logger & log(log_level level, std::string && file, int line, std::string_view format_, const Args&... args){
+        if(file.length() > 32){
+            file = file.substr(file.length() - 32);
+        }
         std::string cnt = fmt::format(format_, args...);
         if(!this->log_backend_enabled()){
             std::cout<<current()<<" "<<file<<":"<<get_class_name()<<":"<<line<<"\t"<<cnt<<std::endl;
