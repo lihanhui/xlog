@@ -9,7 +9,7 @@
 
 #include <fmt/format.h>
 
-namespace aquaman::xlog {
+namespace xlog {
 
 enum class log_level {
     VERBOSE     = 0,

@@ -3,7 +3,7 @@
 
 #include <xlog/xlog.h>
 
-using namespace aquaman::xlog;
+using namespace xlog;
 
 bool logger::log_enabled(log_level level){
     return true;

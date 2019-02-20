@@ -3,7 +3,7 @@
 
 #include <xlog/xlog.h>
 int main(){
-    using namespace  aquaman::xlog;
+    using namespace  xlog;
     logger logger_ = logger("main");
     LOG(logger_, log_level::DEBUG, "{}", "this is main func of xlog test");
     
