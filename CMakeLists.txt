@@ -15,10 +15,11 @@ include_directories("${PROJECT_SOURCE_DIR}/include/")
 include_directories("/usr/local/include")
 
 find_library(FMT_LIBRARY fmt HINTS /usr/local/lib)
-set(EXTRA_LIBS ${EXTRA_LIBS} wrapper ${FMT_LIBRARY}) 
+set(EXTRA_LIBS ${EXTRA_LIBS} ${FMT_LIBRARY}) 
 message("fmt-libraries - ${FMT_LIBRARY}") 
-add_subdirectory(src/wrapper)
-set(EXTRA_LIBS ${EXTRA_LIBS} wrapper)
+
+#add_subdirectory(src/wrapper)
+#set(EXTRA_LIBS ${EXTRA_LIBS} wrapper)
 
 #include(ExternalProject)
 #ExternalProject_Add (
@@ -30,14 +31,14 @@ set(EXTRA_LIBS ${EXTRA_LIBS} wrapper)
 
 
 #####################################
-add_executable(xlog-test src/xlog.cxx)
+add_executable(xlog-test src/xlog.cxx src/wrapper/wrapper)
 target_link_libraries(xlog-test  ${EXTRA_LIBS})
 
-add_library(xlog SHARED src/xlog.cxx)
-set_target_properties(wrapper PROPERTIES
-  IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
-  IMPORTED_LOCATION "${CMAKE_INSTALL_PREFIX}"
-)
+add_library(xlog SHARED src/xlog.cxx src/wrapper/wrapper)
+#set_target_properties(wrapper PROPERTIES
+#  IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
+#  IMPORTED_LOCATION "${CMAKE_INSTALL_PREFIX}"
+#)
   
 set_target_properties(xlog PROPERTIES VERSION 1.0 SOVERION 1)
 target_link_libraries(xlog  ${EXTRA_LIBS})
@@ -50,7 +51,7 @@ install (DIRECTORY "${PROJECT_SOURCE_DIR}/include/xlog"
 install (EXPORT xlog-targets
          DESTINATION lib/cmake/xlog)
 
-export (TARGETS xlog wrapper FILE xlog-targets.cmake)
+#export (TARGETS xlog wrapper FILE xlog-targets.cmake)
 configure_file ( "${PROJECT_SOURCE_DIR}/pkg/xlog-config.cmake.in"
                  "${PROJECT_BINARY_DIR}/xlog-config.cmake" @ONLY)
                  
