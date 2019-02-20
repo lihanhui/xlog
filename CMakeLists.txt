@@ -16,7 +16,7 @@ include_directories("/usr/local/include")
 
 find_library(FMT_LIBRARY fmt HINTS /usr/local/lib)
 set(EXTRA_LIBS ${EXTRA_LIBS} wrapper ${FMT_LIBRARY}) 
- 
+message("fmt-libraries - ${FMT_LIBRARY}") 
 add_subdirectory(src/wrapper)
 set(EXTRA_LIBS ${EXTRA_LIBS} wrapper)
 
@@ -34,6 +34,11 @@ add_executable(xlog-test src/xlog.cxx)
 target_link_libraries(xlog-test  ${EXTRA_LIBS})
 
 add_library(xlog SHARED src/xlog.cxx)
+set_target_properties(wrapper PROPERTIES
+  IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
+  IMPORTED_LOCATION "${CMAKE_INSTALL_PREFIX}"
+)
+  
 set_target_properties(xlog PROPERTIES VERSION 1.0 SOVERION 1)
 target_link_libraries(xlog  ${EXTRA_LIBS})
 

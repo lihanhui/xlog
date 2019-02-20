@@ -1,5 +1,9 @@
 get_filename_component (_dir "${CMAKE_CURRENT_LIST_FILE}" PATH)
-get_filename_component (_prefix "${_dir/../../..}" ABSOLUTE)
+get_filename_component (_prefix "${_dir}/../../.." ABSOLUTE)
+include ("${_dir}/xlog-targets.cmake")
+set (xlog_INCLUDE_DIRS "${_prefix}/include")
+message("xlog include dir: ${xlog_INCLUDE_DIRS}")
 
-include ("${_prefix}/lib/cmake/xlog/xlog-targets.cmake")
-set (xlog_INCLUDE_DIRS "${_prefix/include}")
+find_library(xlog_LIBRARIES xlog HINTS "${_prefix}/lib")
+set_target_properties(xlog PROPERTIES IMPORTED_LOCATION "${xlog_LIBRARIES}")
+message("xlog lib dir: ${xlog_LIBRARY_PATH}")
