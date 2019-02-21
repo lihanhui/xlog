@@ -9,20 +9,20 @@
 
 #include <fmt/format.h>
 
+#include "xlog/log_level.h"
+#include "xlog/wrapper/wrapper.h"
+
 namespace xlog {
 
-enum class log_level {
-    VERBOSE     = 0,
-    DEBUG       = 1,
-    INFO        = 2,
-    WARN        = 3,
-    ERROR       = 4,
-    FATAL       = 5
-};
 
 class logger {
 private:
     std::string class_name; // or fileName
+    static std::shared_ptr<log_wrapper> wrapper_;
+public:
+    static void set_log_wrapper(std::shared_ptr<log_wrapper> wrapper_){
+        logger::wrapper_ = wrapper_;
+    }
 public:
     logger(){
         this->class_name = "root";
@@ -36,18 +36,22 @@ public:
     bool log_enabled(log_level level);//{
     //  return true;
     //}
-    template<class... Args> logger & log(log_level level, std::string && file, int line, std::string_view format_, const Args&... args){
+    template<class... Args> logger & log(log_level level, std::string && file, std::string && func, int line, std::string && format_, const Args&... args){
         if(file.length() > 32){
             file = file.substr(file.length() - 32);
         }
         std::string cnt = fmt::format(format_, args...);
         if(!this->log_backend_enabled()){
-            std::cout<<current()<<" "<<file<<":"<<get_class_name()<<":"<<line<<"\t"<<cnt<<std::endl;
+            std::cout<<current()<<" "<<file<<":"<<get_class_name()<<":"<<func<<":"<<line<<"\t"<<cnt<<std::endl;
+        }else{
+            logger::wrapper_->log(level, file, func, line, cnt);
         }
         return *this;
     }
 private:
-    bool log_backend_enabled();
+    bool log_backend_enabled(){
+        return logger::wrapper_ != nullptr;
+    }
     
     inline std::string current(){
         std::chrono::time_point<std::chrono::system_clock> p2 = std::chrono::system_clock::now();
@@ -61,22 +65,27 @@ private:
     
 #define XLOG_GET_FILE() __FILE__
 #define XLOG_GET_LINE() __LINE__
-//aquaman::xlog::logger l = std::forward<aquaman::xlog::logger>(logger_);           \
-//aquaman::xlog::log_level level = std::forward<aquaman::xlog::log_level> (level_); \
+#ifdef _MSC_VER
+#   define XLOG_GET_FUNC()      __FUNCTION__
+#elif defined(__BORLANDC__)
+#   define XLOG_GET_FUNC()      __FUNC__
+#else
+#   define XLOG_GET_FUNC()      __PRETTY_FUNCTION__
+#endif
     
-#define LOG_IF(cond, logger_, level_, fmt, args...) do {                                \
-    if(!(cond)){                                                                        \
-        break;                                                                          \
-    }                                                                                   \
-    if(logger_.log_enabled(level_)){                                                    \
-        logger_.log(level_, XLOG_GET_FILE(), XLOG_GET_LINE(), fmt, ##args);             \
-    }                                                                                   \
+#define XLOG_IF(cond, logger_, level_, fmt, args...) do {                                   \
+    if(!(cond)){                                                                            \
+        break;                                                                              \
+    }                                                                                       \
+    if(logger_.log_enabled(level_)){                                                        \
+        logger_.log(level_, XLOG_GET_FILE(), XLOG_GET_FUNC(), XLOG_GET_LINE(), fmt, ##args);\
+    }                                                                                       \
 }while(0)
 
-#define LOG(logger_, level_, fmt, args...) do {                                         \
-    if(logger_.log_enabled(level_)){                                                    \
-        logger_.log(level_, XLOG_GET_FILE(), XLOG_GET_LINE(), fmt, ##args);             \
-    }                                                                                   \
+#define XLOG(logger_, level_, fmt, args...) do {                                            \
+    if(logger_.log_enabled(level_)){                                                        \
+        logger_.log(level_, XLOG_GET_FILE(), XLOG_GET_FUNC(), XLOG_GET_LINE(), fmt, ##args);\
+    }                                                                                       \
 }while(0)
 
 };
