@@ -10,6 +10,14 @@ configure_file (
   "${PROJECT_BINARY_DIR}/config.h"
 )
 
+option (XLOG_CUSTOMERIZED_LOBBACKEND "customerized log backend is supported?" OFF)
+if (XLOG_CUSTOMERIZED_LOBBACKEND)
+    message ("customerized log backed is supported")
+    add_definitions(-DXLOG_CUSTOMERIZED_LOBBACKEND)
+else (XLOG_CUSTOMERIZED_LOBBACKEND)
+    message ("run cmake with option: -DXLOG_CUSTOMERIZED_LOBBACKEND=ON to compile customerized log backend")
+endif (XLOG_CUSTOMERIZED_LOBBACKEND)
+
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/include/")
 include_directories("/usr/local/include")
