@@ -40,7 +40,7 @@ plog::Severity to_serverity(xlog::log_level level){
     }
 }
 void xlog::log_wrapper_impl::log(xlog::log_level level, const nstring & file,  const nstring & func, int line, const nstring & data) {
-    (*plog::get())+=plog::Record(to_serverity(level), func.c_str(), line, file.c_str(), 0).ref()<< data;
+    (*plog::get())+=plog::Record(to_serverity(level), func.c_str(), line, file.c_str(), 0)<< data;
     //std::cout<<file<<":"<<func<<":"<<line<<"\t"<<data<<std::endl;
 }
 #endif

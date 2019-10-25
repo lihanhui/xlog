@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.0)
 
 set (CXX_STANDARD "c++17")
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=${CXX_STANDARD}")
+set (CMAKE_CXX_FLAGS "-fPIC ${CMAKE_CXX_FLAGS} -std=${CXX_STANDARD}")
 
 project (xlog VERSION 1.0.0)
 
@@ -49,7 +49,7 @@ add_library(xlog SHARED src/xlog.cxx src/wrapper/wrapper)
 #)
   
 set_target_properties(xlog PROPERTIES VERSION 1.0 SOVERION 1)
-target_link_libraries(xlog  ${EXTRA_LIBS})
+#target_link_libraries(xlog  ${EXTRA_LIBS})
 
 # add the install targets
 install (TARGETS xlog DESTINATION lib
