@@ -7,6 +7,7 @@
 #include <string>
 #include <string_view>
 
+#define FMT_HEADER_ONLY
 #include <fmt/format.h>
 
 #include "xlog/log_level.h"

@@ -4,6 +4,7 @@
 #include <string_view>
 #include <plog/Log.h>
 #include <plog/Logger.h>
+#include <plog/Initializers/RollingFileInitializer.h>
 
 #include "xlog/xlog.h"
 #include "xlog/wrapper/wrapper.h"
@@ -40,7 +41,7 @@ plog::Severity to_serverity(xlog::log_level level){
     }
 }
 void xlog::log_wrapper_impl::log(xlog::log_level level, const nstring & file,  const nstring & func, int line, const nstring & data) {
-    (*plog::get())+=plog::Record(to_serverity(level), func.c_str(), line, file.c_str(), 0)<< data;
+    (*plog::get())+=plog::Record(to_serverity(level), func.c_str(), line, file.c_str(), 0, 0)<< data;
     //std::cout<<file<<":"<<func<<":"<<line<<"\t"<<data<<std::endl;
 }
 #endif

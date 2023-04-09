@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.0)
 
 set (CXX_STANDARD "c++17")
-set (CMAKE_CXX_FLAGS "-fPIC ${CMAKE_CXX_FLAGS} -std=${CXX_STANDARD}")
+set (CMAKE_CXX_FLAGS "-fno-pie -no-pie -fPIC ${CMAKE_CXX_FLAGS} -std=${CXX_STANDARD}")
 
 project (xlog VERSION 1.0.0)
 
@@ -23,8 +23,8 @@ include_directories("${PROJECT_SOURCE_DIR}/include/")
 include_directories("/usr/local/include")
 
 find_library(FMT_LIBRARY fmt HINTS /usr/local/lib)
-set(EXTRA_LIBS ${EXTRA_LIBS} ${FMT_LIBRARY}) 
-message("fmt-libraries - ${FMT_LIBRARY}") 
+#set(EXTRA_LIBS ${EXTRA_LIBS} ${FMT_LIBRARY}) 
+message("fmt-libraries - ${FMT_LIBRARY}: does not link fmt, just use header only with #define FMT_HEADER_ONLY") 
 
 #add_subdirectory(src/wrapper)
 #set(EXTRA_LIBS ${EXTRA_LIBS} wrapper)
